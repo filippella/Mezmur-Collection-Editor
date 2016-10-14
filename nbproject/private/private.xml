@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/ui/CollectionEditorScreen.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/presenter/CollectionEditorPresenter.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/renderer/MezmurRenderer.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/helper/FontHelper.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/process/FileProcessor.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/process/JsonProcessor.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionCreator/src/mezmurcollectioncreator/process/BaseProcessor.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/ui/CollectionEditorScreen.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/helper/FontHelper.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/process/JsonProcessor.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/utilities/FileUtility.java</file>
         </group>
     </open-files>
 </project-private>

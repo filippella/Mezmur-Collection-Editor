@@ -57,7 +57,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         });
         
         this.presenter = new CollectionEditorPresenter(this);
-        this.presenter.loadMezmur("/mezmurcollectioncreator/assets/mezmur_new.json");
+        this.presenter.loadMezmur("/mezmurcollectioneditor/assets/mezmur_new.json");
     }
 
     /**
@@ -108,7 +108,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jToolBar1.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioncreator/images/ic_keyboard.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_keyboard.png"))); // NOI18N
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);

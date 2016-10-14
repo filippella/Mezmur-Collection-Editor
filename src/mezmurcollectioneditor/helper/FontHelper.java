@@ -41,7 +41,7 @@ public final class FontHelper {
 
     public Font getCustomFont() {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/mezmurcollectioncreator/font/nyala.ttf"));
+            font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/mezmurcollectioneditor/font/nyala.ttf"));
         } catch (FontFormatException ex) {
             JOptionPane.showMessageDialog(null, ex);
             Logger.getLogger(FontHelper.class.getName()).log(Level.SEVERE, null, ex);
