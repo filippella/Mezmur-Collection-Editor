@@ -164,6 +164,8 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         languageToggle = new javax.swing.JToggleButton();
         mezmurCatecogySelectorList = new javax.swing.JComboBox();
         mezmurSearchField = new javax.swing.JTextField();
@@ -196,16 +198,44 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_add.png"))); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_remove.png"))); // NOI18N
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton2);
+
         languageToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_english.png"))); // NOI18N
+        languageToggle.setText("Change Keyboard");
+        languageToggle.setToolTipText("");
         languageToggle.setFocusable(false);
-        languageToggle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        languageToggle.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        languageToggle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jToolBar1.add(languageToggle);
 
         mezmurCatecogySelectorList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -350,10 +380,72 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_search.png"))); // NOI18N
 
         jMenu1.setText("File");
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_add_small.png"))); // NOI18N
+        jMenuItem1.setText("New");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_open_small.png"))); // NOI18N
+        jMenuItem2.setText("Open");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_save_small.gif"))); // NOI18N
+        jMenuItem3.setText("Save");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_save_as_small.png"))); // NOI18N
+        jMenuItem4.setText("Save As...");
+        jMenu1.add(jMenuItem4);
+
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_exit_small.png"))); // NOI18N
+        jMenuItem5.setText("Exit");
+        jMenu1.add(jMenuItem5);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_check_duplicates_small.png"))); // NOI18N
+        jMenuItem6.setText("Check for Duplicates");
+        jMenu2.add(jMenuItem6);
+
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_sort_small.png"))); // NOI18N
+        jMenuItem7.setText("Sort Alphabetically");
+        jMenu2.add(jMenuItem7);
+
+        jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_category_sort_small.png"))); // NOI18N
+        jMenuItem8.setText("Sort By Category");
+        jMenu2.add(jMenuItem8);
+
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_import_small.png"))); // NOI18N
+        jMenuItem9.setText("Import File");
+        jMenu2.add(jMenuItem9);
+
+        jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_export_small.png"))); // NOI18N
+        jMenuItem10.setText("Export As");
+        jMenu2.add(jMenuItem10);
+
         jMenuBar1.add(jMenu2);
+
+        jMenu4.setText("Preferences");
+
+        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_settings_small.png"))); // NOI18N
+        jMenuItem13.setText("Settings");
+        jMenu4.add(jMenuItem13);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu3.setText("Help");
+
+        jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_about_small.png"))); // NOI18N
+        jMenuItem11.setText("About");
+        jMenu3.add(jMenuItem11);
+
+        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_help_small.png"))); // NOI18N
+        jMenuItem12.setText("Help");
+        jMenu3.add(jMenuItem12);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -407,6 +499,8 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         pack();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -420,7 +514,22 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
