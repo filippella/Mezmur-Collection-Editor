@@ -606,26 +606,28 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         JComboBox<String> exportOptions = new JComboBox<>(options);
         int selection = JOptionPane.showOptionDialog(null, exportOptions, "Export Collection As..",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[]{"OK"}, options[0]);
-        int selectedIndex = exportOptions.getSelectedIndex();
-        switch (selectedIndex) {
-            case 0:
-                System.out.println("json");
-                JFileChooser chooser = new JFileChooser();
-                if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                    File file = chooser.getSelectedFile();
-                    List<MezmurInfo> mezmurInfos = Collections.list(mezmurListModel.elements());
-                    presenter.saveAsJson(file, mezmurInfos);
-                }
-                break;
-            case 1:
-                System.out.println("xml");
-                break;
-            case 2:
-                System.out.println("csv");
-                break;
-            case 3:
-                System.out.println("sql");
-                break;
+        if (selection == 0) {
+            int selectedIndex = exportOptions.getSelectedIndex();
+            switch (selectedIndex) {
+                case 0:
+                    System.out.println("json");
+                    JFileChooser chooser = new JFileChooser();
+                    if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                        File file = chooser.getSelectedFile();
+                        List<MezmurInfo> mezmurInfos = Collections.list(mezmurListModel.elements());
+                        presenter.saveAsJson(file, mezmurInfos);
+                    }
+                    break;
+                case 1:
+                    System.out.println("xml");
+                    break;
+                case 2:
+                    System.out.println("csv");
+                    break;
+                case 3:
+                    System.out.println("sql");
+                    break;
+            }
         }
     }
 
