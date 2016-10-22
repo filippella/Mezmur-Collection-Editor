@@ -6,6 +6,8 @@
 package mezmurcollectioneditor.process;
 
 import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 import mezmurcollectioneditor.data.Callback;
 import mezmurcollectioneditor.utilities.FileUtility;
 
@@ -24,15 +26,17 @@ public abstract class BaseProcessor<D> implements FileProcessor {
     private boolean finished = DEFAULT_VALUE;
     private String path;
     private Callback callback;
+    private final List<Thread> taskList = new ArrayList<>();
     
     protected void createTask(String path, Callback callback) {
         this.path = path;
         this.callback = callback;
-        finished = false;
-        new Thread(this).start();
+        this.finished = false;
+        Thread task = new Thread(this);
+        this.taskList.add(task);
+        task.start();
     }
-
-
+    
     @Override
     public boolean hasFinished() {
         return finished;
@@ -41,7 +45,14 @@ public abstract class BaseProcessor<D> implements FileProcessor {
     @Override
     public void run() {
         onDoInbackground(path, callback);
-        finished = DEFAULT_VALUE;
+        this.finished = DEFAULT_VALUE;
+    }
+    
+    protected void stopTasks() {
+        for(int i = 0; i < taskList.size(); i++) {
+            Thread task = taskList.get(i);
+            task.stop();
+        }
     }
 
     protected abstract void onDoInbackground(String path, Callback<D> callback);

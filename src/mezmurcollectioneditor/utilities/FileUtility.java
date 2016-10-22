@@ -47,4 +47,14 @@ public class FileUtility {
             System.err.println("Error -> " + e.getMessage());
         }
     }
+
+    public void writeJsonFile(File file, String json) {
+        try {
+            FileWriter writer = new FileWriter(file + ".json");
+            writer.write(json);
+            writer.close();
+        } catch (Exception e) {
+            System.err.println("Error -> " + e.getMessage());
+        }
+    }
 }

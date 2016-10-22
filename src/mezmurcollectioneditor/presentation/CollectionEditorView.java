@@ -18,5 +18,7 @@ public interface CollectionEditorView {
 
     void onError(String message);
 
+    void clearEverything();
+
     void onAppendCategory(CategoryInfo data);
 }

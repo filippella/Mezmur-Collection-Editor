@@ -5,8 +5,11 @@
  */
 package mezmurcollectioneditor.process;
 
+import com.google.gson.reflect.TypeToken;
+import java.io.File;
 import java.util.List;
 import mezmurcollectioneditor.data.Callback;
+import mezmurcollectioneditor.data.MezmurInfo;
 /**
  *
  * @author Filippo
@@ -40,5 +43,18 @@ public class JsonProcessor<D> extends BaseProcessor<D> {
             D data = dataList.get(i);
             callback.onSuccess(data);
         }
+    }
+
+    public void stopAll() {
+        stopTasks();
+    }
+
+    public void saveFile(File file, String json) {
+        this.fileUtility.writeJsonFile(file, json);
+    }
+
+    public void saveFile(File file, List<MezmurInfo> mezmurInfos) {
+        String json = gson.toJson(mezmurInfos, new TypeToken<List<MezmurInfo>>() {}.getType());
+        this.fileUtility.writeJsonFile(file, json);
     }
 }

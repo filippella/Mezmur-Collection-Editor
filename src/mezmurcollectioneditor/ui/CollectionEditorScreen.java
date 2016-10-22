@@ -6,10 +6,22 @@
 package mezmurcollectioneditor.ui;
 
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -97,6 +109,29 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         this.mezmurSearchFieldAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurSearchField);
         this.mezmurTitleAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurTitleTxt);
         this.mezmurExtraInfoAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurExtraInfoTxt);
+
+        this.mezmurTitleTxt.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                MezmurInfo mezmurInfo = mezmurList.getSelectedValue();
+                if (mezmurInfo != null) {
+                    String title = mezmurTitleTxt.getText();
+                    if (!title.isEmpty()) {
+                        mezmurInfo.setMezmurTitle(mezmurTitleTxt.getText());
+                    }
+                }
+            }
+        });
+        this.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                showExportDialog();
+                super.windowClosing(e);
+            }
+        });
     }
 
     /**
@@ -105,6 +140,10 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
      * @param mezmurInfo
      */
     private void bindMezmurInfo(MezmurInfo mezmurInfo) {
+        if (mezmurInfo == null) {
+            return;
+        }
+        this.deleteMezmurFromList.setEnabled(true);
         mezmurIdTxt.setText(mezmurInfo.getMezmurId());
         mezmurTitleTxt.setText(mezmurInfo.getMezmurTitle());
         mezmurBodyTxt.setText(mezmurInfo.getMezmurBody());
@@ -164,8 +203,9 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        deleteMezmurFromList = new javax.swing.JButton();
         languageToggle = new javax.swing.JToggleButton();
         mezmurCatecogySelectorList = new javax.swing.JComboBox();
         mezmurSearchField = new javax.swing.JTextField();
@@ -204,11 +244,12 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menuEmptyList = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        exportAsMenu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -219,17 +260,29 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jToolBar1.setRollover(true);
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_category.png"))); // NOI18N
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton2);
+
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_add.png"))); // NOI18N
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton1);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_remove.png"))); // NOI18N
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
+        deleteMezmurFromList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_remove.png"))); // NOI18N
+        deleteMezmurFromList.setEnabled(false);
+        deleteMezmurFromList.setFocusable(false);
+        deleteMezmurFromList.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deleteMezmurFromList.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deleteMezmurFromList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMezmurFromListActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(deleteMezmurFromList);
 
         languageToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_english.png"))); // NOI18N
         languageToggle.setText("Change Keyboard");
@@ -255,8 +308,6 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         jLabel13.setText("Mezmur Title:");
 
         jLabel14.setText("Mezmur Id:");
-
-        mezmurCategoryList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -381,22 +432,27 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jMenu1.setText("File");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_add_small.png"))); // NOI18N
         jMenuItem1.setText("New");
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_open_small.png"))); // NOI18N
         jMenuItem2.setText("Open");
         jMenu1.add(jMenuItem2);
 
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_save_small.gif"))); // NOI18N
         jMenuItem3.setText("Save");
         jMenu1.add(jMenuItem3);
 
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_save_as_small.png"))); // NOI18N
         jMenuItem4.setText("Save As...");
         jMenu1.add(jMenuItem4);
 
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_exit_small.png"))); // NOI18N
         jMenuItem5.setText("Exit");
         jMenu1.add(jMenuItem5);
@@ -405,30 +461,51 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jMenu2.setText("Edit");
 
+        menuEmptyList.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        menuEmptyList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_empty_small.gif"))); // NOI18N
+        menuEmptyList.setText("Empty List");
+        menuEmptyList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEmptyListActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuEmptyList);
+
+        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_check_duplicates_small.png"))); // NOI18N
         jMenuItem6.setText("Check for Duplicates");
         jMenu2.add(jMenuItem6);
 
+        jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_sort_small.png"))); // NOI18N
         jMenuItem7.setText("Sort Alphabetically");
         jMenu2.add(jMenuItem7);
 
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_category_sort_small.png"))); // NOI18N
         jMenuItem8.setText("Sort By Category");
         jMenu2.add(jMenuItem8);
 
+        jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_import_small.png"))); // NOI18N
         jMenuItem9.setText("Import File");
         jMenu2.add(jMenuItem9);
 
-        jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_export_small.png"))); // NOI18N
-        jMenuItem10.setText("Export As");
-        jMenu2.add(jMenuItem10);
+        exportAsMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        exportAsMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_export_small.png"))); // NOI18N
+        exportAsMenu.setText("Export As");
+        exportAsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportAsMenuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(exportAsMenu);
 
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Preferences");
 
+        jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_settings_small.png"))); // NOI18N
         jMenuItem13.setText("Settings");
         jMenu4.add(jMenuItem13);
@@ -441,6 +518,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         jMenuItem11.setText("About");
         jMenu3.add(jMenuItem11);
 
+        jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_help_small.png"))); // NOI18N
         jMenuItem12.setText("Help");
         jMenu3.add(jMenuItem12);
@@ -498,7 +576,62 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuEmptyListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmptyListActionPerformed
+        int option = showConfirmDialog("Are you sure you want to empty the properties?", "Clear Everything Info");
+        switch (option) {
+            case 0:
+                this.presenter.clearAll();
+                break;
+        }
+    }//GEN-LAST:event_menuEmptyListActionPerformed
+
+    private void deleteMezmurFromListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMezmurFromListActionPerformed
+        int option = showConfirmDialog("Remove seleted mezmur item from the list", "Delete Mezmur?");
+        switch (option) {
+            case 0:
+                this.mezmurListModel.removeElementAt(this.mezmurList.getSelectedIndex());
+                this.deleteMezmurFromList.setEnabled(false);
+                emptyMezmurEditor();
+                break;
+        }
+    }//GEN-LAST:event_deleteMezmurFromListActionPerformed
+
+    private void exportAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsMenuActionPerformed
+        showExportDialog();
+    }//GEN-LAST:event_exportAsMenuActionPerformed
+
+    private void showExportDialog() throws HeadlessException {
+        String[] options = {"json", "xml", "csv", "sql"};
+        JComboBox<String> exportOptions = new JComboBox<>(options);
+        int selection = JOptionPane.showOptionDialog(null, exportOptions, "Export Collection As..",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[]{"OK"}, options[0]);
+        int selectedIndex = exportOptions.getSelectedIndex();
+        switch (selectedIndex) {
+            case 0:
+                System.out.println("json");
+                JFileChooser chooser = new JFileChooser();
+                if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                    List<MezmurInfo> mezmurInfos = Collections.list(mezmurListModel.elements());
+                    presenter.saveAsJson(file, mezmurInfos);
+                }
+                break;
+            case 1:
+                System.out.println("xml");
+                break;
+            case 2:
+                System.out.println("csv");
+                break;
+            case 3:
+                System.out.println("sql");
+                break;
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteMezmurFromList;
+    private javax.swing.JMenuItem exportAsMenu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -518,7 +651,6 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
@@ -536,6 +668,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToggleButton languageToggle;
+    private javax.swing.JMenuItem menuEmptyList;
     private javax.swing.JTextField mezmurAudioUrlTxt;
     private javax.swing.JTextPane mezmurBodyTxt;
     private javax.swing.JComboBox mezmurCatecogySelectorList;
@@ -552,18 +685,42 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void onAppendMezmur(MezmurInfo data) {
-        this.mezmurListModel.addElement(data);
-        //System.out.println("Model size = " + mezmurListModel.size());
-    }
-
-    @Override
     public void onError(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 
     @Override
+    public void clearEverything() {
+        this.categoryListModel.removeAllElements();
+        this.mezmurListModel.removeAllElements();
+        this.mezmurCategoryListModel.removeAllElements();
+        this.mezmurSearchField.setText(null);
+        emptyMezmurEditor();
+    }
+
+    private int showConfirmDialog(String message, String title) {
+        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+    }
+
+    private void emptyMezmurEditor() {
+        this.mezmurIdTxt.setText(null);
+        this.mezmurTitleTxt.setText(null);
+        this.mezmurBodyTxt.setText(null);
+        this.mezmurExtraInfoTxt.setText(null);
+        this.mezmurOwnerTxt.setText(null);
+        this.mezmurCreatedDateTxt.setText(null);
+        this.mezmurModifiedDateTxt.setText(null);
+        this.mezmurAudioUrlTxt.setText(null);
+        this.mezmurVideoUrlTxt.setText(null);
+    }
+
+    @Override
+    public void onAppendMezmur(MezmurInfo data) {
+        this.mezmurListModel.addElement(data);
+    }
+
+    @Override
     public void onAppendCategory(CategoryInfo data) {
-        this.categoryListModel.addElement(data);
+        this.mezmurCategoryListModel.addElement(data);
     }
 }
