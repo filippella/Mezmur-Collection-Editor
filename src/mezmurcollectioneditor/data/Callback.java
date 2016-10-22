@@ -5,15 +5,19 @@
  */
 package mezmurcollectioneditor.data;
 
+import java.lang.reflect.Type;
 import mezmurcollectioneditor.helper.CollectionException;
 
 /**
  *
  * @author Filippo
+ * @param <D>
  */
 public interface Callback<D> {
     
     void onSuccess(D data);
     
     void onFailure(CollectionException exception);
+    
+    Type getType();
 }

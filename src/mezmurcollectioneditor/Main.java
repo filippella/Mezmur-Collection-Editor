@@ -8,6 +8,7 @@ package mezmurcollectioneditor;
 import com.jtattoo.plaf.smart.SmartLookAndFeel;
 import de.muntjak.tinylookandfeel.TinyLookAndFeel;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import mezmurcollectioneditor.ui.CollectionEditorScreen;
 
@@ -28,9 +29,8 @@ public class Main {
             CollectionEditorScreen screen = new CollectionEditorScreen();
             screen.setLocationRelativeTo(null);
             screen.setVisible(true);
-            
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex, "Error occurred", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

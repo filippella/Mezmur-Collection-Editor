@@ -20,7 +20,7 @@ public class FileUtility {
     public String readFile(String path) {
         try {
             File file = new File(path);
-            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+            InputStreamReader inputStreamReader = new InputStreamReader(ClassLoader.getSystemResourceAsStream(path), "UTF-8");
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line;
             StringBuilder builder = new StringBuilder();

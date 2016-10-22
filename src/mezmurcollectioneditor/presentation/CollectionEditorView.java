@@ -5,6 +5,7 @@
  */
 package mezmurcollectioneditor.presentation;
 
+import mezmurcollectioneditor.data.CategoryInfo;
 import mezmurcollectioneditor.data.MezmurInfo;
 
 /**
@@ -16,4 +17,6 @@ public interface CollectionEditorView {
     void onAppendMezmur(MezmurInfo data);
 
     void onError(String message);
+
+    void onAppendCategory(CategoryInfo data);
 }

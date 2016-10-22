@@ -5,23 +5,20 @@
  */
 package mezmurcollectioneditor.ui;
 
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Font;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import mezmurcollectioneditor.data.CategoryInfo;
 import mezmurcollectioneditor.data.MezmurInfo;
-import mezmurcollectioneditor.helper.MezmurListModel;
 import mezmurcollectioneditor.presentation.CollectionEditorView;
 import mezmurcollectioneditor.presenter.CollectionEditorPresenter;
 import mezmurcollectioneditor.renderer.MezmurRenderer;
 import mezmurcollectioneditor.helper.FontHelper;
+import mezmurcollectioneditor.keyboard.SadissKeyboard;
 
 /**
  *
@@ -31,18 +28,26 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
     private final CollectionEditorPresenter presenter;
     private final DefaultListModel<MezmurInfo> mezmurListModel;
+    private final DefaultComboBoxModel<CategoryInfo> categoryListModel;
     private final JList<MezmurInfo> mezmurList;
-    
+
     /**
      * Creates new form CollectionEditorScreen
      */
     public CollectionEditorScreen() {
         initComponents();
+        FontHelper fontHelper = new FontHelper();
+        Font customFont = fontHelper.getCustomFont();
         this.mezmurListModel = new DefaultListModel<>();
+        this.categoryListModel = new DefaultComboBoxModel<>();
         this.mezmurList = new javax.swing.JList<>();
         this.jScrollPane1.setViewportView(this.mezmurList);
         this.mezmurList.setModel(this.mezmurListModel);
-        FontHelper fontHelper = new FontHelper();
+        CategoryInfo info = new CategoryInfo("*** ALL ** ");
+        this.categoryListModel.addElement(info);
+        this.mezmurCatecogySelectorList.setModel(this.categoryListModel);
+        this.mezmurCatecogySelectorList.setFont(customFont);
+
         this.mezmurList.setCellRenderer(new MezmurRenderer(fontHelper));
         mezmurTitleTxt.setFont(fontHelper.getCustomFont());
         mezmurList.addListSelectionListener(new ListSelectionListener() {
@@ -50,14 +55,38 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    MezmurInfo selectedValue = mezmurList.getSelectedValue();
-                    mezmurTitleTxt.setText(selectedValue.getMezmurTitle());
+                    MezmurInfo mezmurInfo = mezmurList.getSelectedValue();
+                    bindMezmurInfo(mezmurInfo);
                 }
             }
         });
-        
+
         this.presenter = new CollectionEditorPresenter(this);
-        this.presenter.loadMezmur("/mezmurcollectioneditor/assets/mezmur_new.json");
+        this.presenter.loadMezmur("mezmurcollectioneditor/assets/mezmur_new.json");
+        this.presenter.loadCategories("mezmurcollectioneditor/assets/mezmur_categories.json");
+
+        
+        mezmurBodyTxt.setFont(customFont);
+        SadissKeyboard sadissKeyboard = new SadissKeyboard(mezmurBodyTxt, null);
+        mezmurBodyTxt.addKeyListener(sadissKeyboard);
+    }
+
+    /**
+     * This method is used to bind selected mezmur info value into the editor
+     * @param mezmurInfo 
+     */
+    private void bindMezmurInfo(MezmurInfo mezmurInfo) {
+        mezmurIdTxt.setText(mezmurInfo.getMezmurId());
+        mezmurTitleTxt.setText(mezmurInfo.getMezmurTitle());
+        mezmurBodyTxt.setText(mezmurInfo.getMezmurBody());
+        //mezmurCategoryList.setText(mezmurInfo.getMezmurTitle());
+        mezmurExtraInfoTxt.setText(mezmurInfo.getMezmurExtraInfo());
+       // mezmurStatusOption.setText(mezmurInfo.getMezmurTitle());
+        mezmurOwnerTxt.setText(mezmurInfo.getMezmurOwner());
+        mezmurCreatedDateTxt.setText(mezmurInfo.getMezmurCreatedDate());
+        mezmurModifiedDateTxt.setText(mezmurInfo.getMezmurModifiedDate());
+        mezmurAudioUrlTxt.setText(mezmurInfo.getMezmurAudioURL());
+        mezmurVideoUrlTxt.setText(mezmurInfo.getMezmurVideoURL());
     }
 
     /**
@@ -72,34 +101,34 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         fontCheck = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        mezmurCatecogySelectorList = new javax.swing.JComboBox();
         jTextField4 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         javax.swing.JList mezmurList = new javax.swing.JList<MezmurInfo>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
+        mezmurBodyTxt = new javax.swing.JTextPane();
         jPanel6 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        mezmurIdTxt = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField21 = new javax.swing.JTextField();
-        jTextField22 = new javax.swing.JTextField();
+        mezmurCreatedDateTxt = new javax.swing.JTextField();
+        mezmurModifiedDateTxt = new javax.swing.JTextField();
         mezmurTitleTxt = new javax.swing.JTextField();
-        jTextField24 = new javax.swing.JTextField();
+        mezmurCategoryList = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jTextField31 = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        jTextField32 = new javax.swing.JTextField();
-        jTextField33 = new javax.swing.JTextField();
-        jTextField34 = new javax.swing.JTextField();
-        jTextField35 = new javax.swing.JTextField();
+        mezmurAudioUrlTxt = new javax.swing.JTextField();
+        mezmurVideoUrlTxt = new javax.swing.JTextField();
+        mezmurOwnerTxt = new javax.swing.JTextField();
+        mezmurExtraInfoTxt = new javax.swing.JTextField();
+        mezmurStatusOption = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -120,15 +149,15 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         fontCheck.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(fontCheck);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        mezmurCatecogySelectorList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jScrollPane1.setViewportView(mezmurList);
 
-        jScrollPane2.setViewportView(jEditorPane1);
+        jScrollPane2.setViewportView(mezmurBodyTxt);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Basic Properties"));
 
-        jLabel11.setText("Mezmur category Id:");
+        jLabel11.setText("Mezmur category:");
 
         jLabel12.setText("Mezmur modified date:");
 
@@ -138,55 +167,59 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jLabel14.setText("Mezmur Id:");
 
+        mezmurCategoryList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel12))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel14))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField21, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mezmurTitleTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGap(55, 55, 55)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel13)
+                                .addComponent(jLabel14)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                            .addGap(13, 13, 13)
+                            .addComponent(jLabel5)))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mezmurCreatedDateTxt)
+                    .addComponent(mezmurModifiedDateTxt)
+                    .addComponent(mezmurTitleTxt)
+                    .addComponent(mezmurIdTxt)
+                    .addComponent(mezmurCategoryList, 0, 200, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel14))
+                    .addComponent(mezmurIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mezmurTitleTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurTitleTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField21, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurCreatedDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurModifiedDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField24, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurCategoryList, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addComponent(jLabel11))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Additional Properties"));
@@ -201,55 +234,58 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jLabel27.setText("Mezmur status:");
 
+        mezmurStatusOption.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel26)
-                                .addComponent(jLabel27)))
-                        .addComponent(jLabel15)
-                        .addComponent(jLabel25))
-                    .addComponent(jLabel24))
+                            .addGap(28, 28, 28)
+                            .addComponent(jLabel27))
+                        .addComponent(jLabel26))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel25)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField34, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(jTextField32)
-                    .addComponent(jTextField33)
-                    .addComponent(jTextField35)
-                    .addComponent(jTextField31))
+                    .addComponent(mezmurOwnerTxt)
+                    .addComponent(mezmurAudioUrlTxt)
+                    .addComponent(mezmurVideoUrlTxt)
+                    .addComponent(mezmurExtraInfoTxt)
+                    .addComponent(mezmurStatusOption, 0, 200, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(7, 7, 7)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurStatusOption, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField34, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurOwnerTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurAudioUrlTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurVideoUrlTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField35, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mezmurExtraInfoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jMenu1.setText("File");
@@ -266,17 +302,17 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField4)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(mezmurCatecogySelectorList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 8, Short.MAX_VALUE))
                     .addComponent(jScrollPane2))
                 .addContainerGap())
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -288,27 +324,24 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mezmurCatecogySelectorList, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    }// </editor-fold>                            // Variables declaration - do not modify//GEN-END:initComponents
     private javax.swing.JButton fontCheck;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -326,18 +359,20 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
-    private javax.swing.JTextField jTextField24;
-    private javax.swing.JTextField jTextField31;
-    private javax.swing.JTextField jTextField32;
-    private javax.swing.JTextField jTextField33;
-    private javax.swing.JTextField jTextField34;
-    private javax.swing.JTextField jTextField35;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTextField mezmurAudioUrlTxt;
+    private javax.swing.JTextPane mezmurBodyTxt;
+    private javax.swing.JComboBox mezmurCatecogySelectorList;
+    private javax.swing.JComboBox mezmurCategoryList;
+    private javax.swing.JTextField mezmurCreatedDateTxt;
+    private javax.swing.JTextField mezmurExtraInfoTxt;
+    private javax.swing.JTextField mezmurIdTxt;
+    private javax.swing.JTextField mezmurModifiedDateTxt;
+    private javax.swing.JTextField mezmurOwnerTxt;
+    private javax.swing.JComboBox mezmurStatusOption;
     private javax.swing.JTextField mezmurTitleTxt;
+    private javax.swing.JTextField mezmurVideoUrlTxt;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -349,5 +384,10 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     @Override
     public void onError(String message) {
         JOptionPane.showMessageDialog(null, message);
+    }
+
+    @Override
+    public void onAppendCategory(CategoryInfo data) {
+        this.categoryListModel.addElement(data);
     }
 }

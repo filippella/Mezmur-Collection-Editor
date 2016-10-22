@@ -6,11 +6,13 @@
 package mezmurcollectioneditor.presenter;
 
 import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import mezmurcollectioneditor.data.Callback;
+import mezmurcollectioneditor.data.CategoryInfo;
 import mezmurcollectioneditor.data.MezmurInfo;
 import mezmurcollectioneditor.helper.CollectionException;
 import mezmurcollectioneditor.presentation.CollectionEditorView;
@@ -30,6 +32,11 @@ public class CollectionEditorPresenter extends BasePresenter {
         this.view = view;
     }
     
+    /**
+     * This method is used to load mezmurs
+     * 
+     * @param path 
+     */
     public void loadMezmur(String path) {
         FileProcessor processor = JsonProcessor.newInstance();
         processor.open(path, new Callback<MezmurInfo>() {
@@ -48,6 +55,37 @@ public class CollectionEditorPresenter extends BasePresenter {
             @Override
             public void onFailure(CollectionException exception) {
                 view.onError(exception.getMessage());
+            }
+
+            @Override
+            public Type getType() {
+                return new TypeToken<List<MezmurInfo>>() {}.getType();
+            }
+        });
+    }
+
+    /**
+     * This method is used to load mezmur categories
+     * 
+     * @param path 
+     */
+    public void loadCategories(String path) {
+        FileProcessor processor = JsonProcessor.newInstance();
+        processor.open(path, new Callback<CategoryInfo>() {
+
+            @Override
+            public void onSuccess(CategoryInfo data) {
+                view.onAppendCategory(data);
+            }
+
+            @Override
+            public void onFailure(CollectionException exception) {
+                view.onError(exception.getMessage());
+            }
+
+            @Override
+            public Type getType() {
+                return new TypeToken<List<CategoryInfo>>() {}.getType();
             }
         });
     }

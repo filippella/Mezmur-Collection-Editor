@@ -3,10 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/ui/CollectionEditorScreen.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/helper/FontHelper.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/process/JsonProcessor.java</file>
-            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/Mezmur%20Collection%20Editor/src/mezmurcollectioneditor/utilities/FileUtility.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/assets/kwk_keyboard.txt</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/ui/CollectionEditorScreen.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/process/FileProcessor.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/helper/FontHelper.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/Main.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/process/BaseProcessor.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/helper/OptionHandler.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/keyboard/SadissKeyboard.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/presenter/CollectionEditorPresenter.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/utilities/FileUtility.java</file>
+            <file>file:/C:/Users/Filippo/Documents/NetBeansProjects/MezmurCollectionEditor/src/mezmurcollectioneditor/process/JsonProcessor.java</file>
         </group>
     </open-files>
 </project-private>

@@ -8,13 +8,13 @@ package mezmurcollectioneditor.process;
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import mezmurcollectioneditor.data.Callback;
-import mezmurcollectioneditor.data.MezmurInfo;
-
 /**
  *
  * @author Filippo
+ * @param <D>
+ * @param <T>
  */
-public class JsonProcessor extends BaseProcessor {
+public class JsonProcessor<D> extends BaseProcessor<D> {
     
     private static JsonProcessor sInstance = new JsonProcessor();
     
@@ -34,13 +34,37 @@ public class JsonProcessor extends BaseProcessor {
         createTask(path, callback);
     }
 
+//    @Override
+//    protected void onDoInbackground(String path, Callback<Class<List<T>>> callback) {
+//        String dataJson = fileUtility.readFile(path);
+//        
+//        
+//        
+////        Class<List<T>> clazz = null;
+//        List<T> dataList = gson.fromJson(dataJson, new TypeToken<List<T>>() {}.getType());
+//        for(int i = 0; i < dataList.size(); i++) {
+//            T data = dataList.get(i);
+//            callback.onSuccess(data);
+//        }
+//    }
+//
+//    @Override
+//    protected void onDoInbackground(String path, Callback<D, T> callback) {
+//        String dataJson = fileUtility.readFile(path);
+//        List<D> dataList = gson.fromJson(dataJson, callback.getType());
+//        for(int i = 0; i < dataList.size(); i++) {
+//            T data = dataList.get(i);
+//            callback.onSuccess(data);
+//        }
+//    }
+
     @Override
-    protected void onDoInbackground(String path, Callback callback) {
-        String mezmurJson = fileUtility.readFile(getClass().getResource(path).getPath());
-        List<MezmurInfo> mezmurInfos = gson.fromJson(mezmurJson, new TypeToken<List<MezmurInfo>>() {}.getType());
-        for(int i = 0; i < mezmurInfos.size(); i++) {
-            MezmurInfo mezmurInfo = mezmurInfos.get(i);
-            callback.onSuccess(mezmurInfo);
+    protected void onDoInbackground(String path, Callback<D> callback) {
+        String dataJson = fileUtility.readFile(path);
+        List<D> dataList = gson.fromJson(dataJson, callback.getType());
+        for(int i = 0; i < dataList.size(); i++) {
+            D data = dataList.get(i);
+            callback.onSuccess(data);
         }
     }
 }

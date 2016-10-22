@@ -12,8 +12,9 @@ import mezmurcollectioneditor.utilities.FileUtility;
 /**
  *
  * @author Filippo
+ * @param <D>
  */
-public abstract class BaseProcessor implements FileProcessor {
+public abstract class BaseProcessor<D> implements FileProcessor {
     
     private static final boolean DEFAULT_VALUE = true;
     
@@ -43,5 +44,5 @@ public abstract class BaseProcessor implements FileProcessor {
         finished = DEFAULT_VALUE;
     }
 
-    protected abstract void onDoInbackground(String path, Callback callback);
+    protected abstract void onDoInbackground(String path, Callback<D> callback);
 }

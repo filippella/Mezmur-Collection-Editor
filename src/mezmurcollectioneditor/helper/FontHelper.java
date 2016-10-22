@@ -8,6 +8,7 @@ package mezmurcollectioneditor.helper;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,27 +22,12 @@ public final class FontHelper {
     private Font font;
 
     public FontHelper() {
-        //createFont(null, 0f);
-    }
-
-    private void createFont(String fontPath, float fontSize) {
-        try {
-            fontPath = "/mezmurcollectioncreator/font/nyala.ttf";
-            fontSize = 15f;
-            font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(fontPath));
-            font.deriveFont(fontSize);
-        } catch (FontFormatException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-            Logger.getLogger(FontHelper.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-            Logger.getLogger(FontHelper.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public Font getCustomFont() {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/mezmurcollectioneditor/font/nyala.ttf"));
+            InputStream fontInputStream = ClassLoader.getSystemResourceAsStream("mezmurcollectioneditor/font/nyala.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
         } catch (FontFormatException ex) {
             JOptionPane.showMessageDialog(null, ex);
             Logger.getLogger(FontHelper.class.getName()).log(Level.SEVERE, null, ex);
