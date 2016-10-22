@@ -17,11 +17,11 @@ import javax.swing.event.ListSelectionListener;
 import mezmurcollectioneditor.data.CategoryInfo;
 import mezmurcollectioneditor.data.MezmurInfo;
 import mezmurcollectioneditor.data.SelectedFonType;
+import mezmurcollectioneditor.helper.FontHelper;
+import mezmurcollectioneditor.keyboard.AmharicKeyboardAdapter;
 import mezmurcollectioneditor.presentation.CollectionEditorView;
 import mezmurcollectioneditor.presenter.CollectionEditorPresenter;
 import mezmurcollectioneditor.renderer.MezmurRenderer;
-import mezmurcollectioneditor.helper.FontHelper;
-import mezmurcollectioneditor.keyboard.AmharicKeyboardAdapter;
 
 /**
  *
@@ -92,7 +92,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         this.mezmurCategoryList.setFont(customFont);
         this.mezmurBodyTxt.setFont(customFont);
         this.mezmurExtraInfoTxt.setFont(customFont);
-        
+
         this.mezmurBodyAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurBodyTxt);
         this.mezmurSearchFieldAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurSearchField);
         this.mezmurTitleAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurTitleTxt);
@@ -301,11 +301,11 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addGap(28, 28, 28)
-                            .addComponent(jLabel27))
-                        .addComponent(jLabel26))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel26)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,11 +392,11 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
                             .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(mezmurSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mezmurSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(mezmurCatecogySelectorList, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -405,7 +405,8 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         );
 
         pack();
-    }// </editor-fold>                            // Variables declaration - do not modify//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -439,7 +440,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JComboBox mezmurStatusOption;
     private javax.swing.JTextField mezmurTitleTxt;
     private javax.swing.JTextField mezmurVideoUrlTxt;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 
     @Override
     public void onAppendMezmur(MezmurInfo data) {
