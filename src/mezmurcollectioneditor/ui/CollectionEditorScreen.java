@@ -6,6 +6,8 @@
 package mezmurcollectioneditor.ui;
 
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -14,11 +16,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import mezmurcollectioneditor.data.CategoryInfo;
 import mezmurcollectioneditor.data.MezmurInfo;
+import mezmurcollectioneditor.data.SelectedFonType;
 import mezmurcollectioneditor.presentation.CollectionEditorView;
 import mezmurcollectioneditor.presenter.CollectionEditorPresenter;
 import mezmurcollectioneditor.renderer.MezmurRenderer;
 import mezmurcollectioneditor.helper.FontHelper;
-import mezmurcollectioneditor.keyboard.SadissKeyboard;
+import mezmurcollectioneditor.keyboard.AmharicKeyboardAdapter;
 
 /**
  *
@@ -28,8 +31,12 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
     private final CollectionEditorPresenter presenter;
     private final DefaultListModel<MezmurInfo> mezmurListModel;
-    private final DefaultComboBoxModel<CategoryInfo> categoryListModel;
+    private final DefaultComboBoxModel<CategoryInfo> categoryListModel, mezmurCategoryListModel;
     private final JList<MezmurInfo> mezmurList;
+    private final AmharicKeyboardAdapter mezmurBodyAmharicKeyboardListener;
+    private final AmharicKeyboardAdapter mezmurSearchFieldAmharicKeyboardListener;
+    private final AmharicKeyboardAdapter mezmurTitleAmharicKeyboardListener;
+    private final AmharicKeyboardAdapter mezmurExtraInfoAmharicKeyboardListener;
 
     /**
      * Creates new form CollectionEditorScreen
@@ -40,14 +47,13 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         Font customFont = fontHelper.getCustomFont();
         this.mezmurListModel = new DefaultListModel<>();
         this.categoryListModel = new DefaultComboBoxModel<>();
+        this.mezmurCategoryListModel = new DefaultComboBoxModel<>();
         this.mezmurList = new javax.swing.JList<>();
         this.jScrollPane1.setViewportView(this.mezmurList);
         this.mezmurList.setModel(this.mezmurListModel);
         CategoryInfo info = new CategoryInfo("*** ALL ** ");
         this.categoryListModel.addElement(info);
         this.mezmurCatecogySelectorList.setModel(this.categoryListModel);
-        this.mezmurCatecogySelectorList.setFont(customFont);
-
         this.mezmurList.setCellRenderer(new MezmurRenderer(fontHelper));
         mezmurTitleTxt.setFont(fontHelper.getCustomFont());
         mezmurList.addListSelectionListener(new ListSelectionListener() {
@@ -65,15 +71,38 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         this.presenter.loadMezmur("mezmurcollectioneditor/assets/mezmur_new.json");
         this.presenter.loadCategories("mezmurcollectioneditor/assets/mezmur_categories.json");
 
+        this.languageToggle.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent ev) {
+                if (ev.getStateChange() == ItemEvent.SELECTED) {
+                    languageToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_amharic.png")));
+                    setSelectedFont(SelectedFonType.AMHARIC);
+                    //languageToggle.setText("Amharic");
+                    System.out.println("button is selected");
+                } else if (ev.getStateChange() == ItemEvent.DESELECTED) {
+                    languageToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_english.png")));
+                    setSelectedFont(SelectedFonType.ENGLISH);
+                    //languageToggle.setText("English");
+                    System.out.println("button is not selected");
+                }
+            }
+        });
+
+        this.mezmurCatecogySelectorList.setFont(customFont);
+        this.mezmurSearchField.setFont(customFont);
+        this.mezmurCategoryList.setFont(customFont);
+        this.mezmurBodyTxt.setFont(customFont);
+        this.mezmurExtraInfoTxt.setFont(customFont);
         
-        mezmurBodyTxt.setFont(customFont);
-        SadissKeyboard sadissKeyboard = new SadissKeyboard(mezmurBodyTxt, null);
-        mezmurBodyTxt.addKeyListener(sadissKeyboard);
+        this.mezmurBodyAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurBodyTxt);
+        this.mezmurSearchFieldAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurSearchField);
+        this.mezmurTitleAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurTitleTxt);
+        this.mezmurExtraInfoAmharicKeyboardListener = new AmharicKeyboardAdapter(this.mezmurExtraInfoTxt);
     }
 
     /**
      * This method is used to bind selected mezmur info value into the editor
-     * @param mezmurInfo 
+     *
+     * @param mezmurInfo
      */
     private void bindMezmurInfo(MezmurInfo mezmurInfo) {
         mezmurIdTxt.setText(mezmurInfo.getMezmurId());
@@ -81,12 +110,48 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         mezmurBodyTxt.setText(mezmurInfo.getMezmurBody());
         //mezmurCategoryList.setText(mezmurInfo.getMezmurTitle());
         mezmurExtraInfoTxt.setText(mezmurInfo.getMezmurExtraInfo());
-       // mezmurStatusOption.setText(mezmurInfo.getMezmurTitle());
+        // mezmurStatusOption.setText(mezmurInfo.getMezmurTitle());
         mezmurOwnerTxt.setText(mezmurInfo.getMezmurOwner());
         mezmurCreatedDateTxt.setText(mezmurInfo.getMezmurCreatedDate());
         mezmurModifiedDateTxt.setText(mezmurInfo.getMezmurModifiedDate());
         mezmurAudioUrlTxt.setText(mezmurInfo.getMezmurAudioURL());
         mezmurVideoUrlTxt.setText(mezmurInfo.getMezmurVideoURL());
+        this.mezmurCategoryListModel.removeAllElements();
+        for (int i = 0; i < categoryListModel.getSize(); i++) {
+            this.mezmurCategoryListModel.addElement(categoryListModel.getElementAt(i));
+        }
+        this.mezmurCategoryList.setModel(this.mezmurCategoryListModel);
+        int itemCount = mezmurCategoryList.getItemCount();
+        for (int i = 0; i < itemCount; i++) {
+            CategoryInfo categoryInfo = (CategoryInfo) mezmurCategoryList.getItemAt(i);
+            String cid = categoryInfo.getCid();
+            if (cid != null && cid.equals(mezmurInfo.getMezmurCategoryId())) {
+                this.mezmurCategoryList.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method is used to select keyboard language
+     *
+     * @param selectedFonType
+     */
+    private void setSelectedFont(SelectedFonType selectedFonType) {
+        switch (selectedFonType) {
+            case AMHARIC:
+                this.mezmurBodyTxt.addKeyListener(this.mezmurBodyAmharicKeyboardListener);
+                this.mezmurSearchField.addKeyListener(this.mezmurSearchFieldAmharicKeyboardListener);
+                this.mezmurTitleTxt.addKeyListener(this.mezmurTitleAmharicKeyboardListener);
+                this.mezmurExtraInfoTxt.addKeyListener(this.mezmurExtraInfoAmharicKeyboardListener);
+                break;
+            case ENGLISH:
+                this.mezmurBodyTxt.removeKeyListener(this.mezmurBodyAmharicKeyboardListener);
+                this.mezmurSearchField.removeKeyListener(this.mezmurSearchFieldAmharicKeyboardListener);
+                this.mezmurTitleTxt.removeKeyListener(this.mezmurTitleAmharicKeyboardListener);
+                this.mezmurExtraInfoTxt.removeKeyListener(this.mezmurExtraInfoAmharicKeyboardListener);
+                break;
+        }
     }
 
     /**
@@ -99,10 +164,9 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        fontCheck = new javax.swing.JButton();
+        languageToggle = new javax.swing.JToggleButton();
         mezmurCatecogySelectorList = new javax.swing.JComboBox();
-        jTextField4 = new javax.swing.JTextField();
+        mezmurSearchField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         javax.swing.JList mezmurList = new javax.swing.JList<MezmurInfo>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -129,6 +193,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         mezmurOwnerTxt = new javax.swing.JTextField();
         mezmurExtraInfoTxt = new javax.swing.JTextField();
         mezmurStatusOption = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -137,17 +202,11 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jToolBar1.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_keyboard.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton1);
-
-        fontCheck.setText("jButton2");
-        fontCheck.setFocusable(false);
-        fontCheck.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        fontCheck.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(fontCheck);
+        languageToggle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_english.png"))); // NOI18N
+        languageToggle.setFocusable(false);
+        languageToggle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        languageToggle.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(languageToggle);
 
         mezmurCatecogySelectorList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -234,7 +293,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         jLabel27.setText("Mezmur status:");
 
-        mezmurStatusOption.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        mezmurStatusOption.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Active", "Inactive" }));
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -288,6 +347,8 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
                 .addContainerGap())
         );
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mezmurcollectioneditor/images/ic_search.png"))); // NOI18N
+
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
@@ -302,17 +363,20 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(mezmurCatecogySelectorList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(mezmurSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(mezmurCatecogySelectorList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 8, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2))
                 .addContainerGap())
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -320,7 +384,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -328,9 +392,11 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
                             .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mezmurSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(mezmurCatecogySelectorList, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -340,8 +406,7 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
 
         pack();
     }// </editor-fold>                            // Variables declaration - do not modify//GEN-END:initComponents
-    private javax.swing.JButton fontCheck;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -359,8 +424,8 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToggleButton languageToggle;
     private javax.swing.JTextField mezmurAudioUrlTxt;
     private javax.swing.JTextPane mezmurBodyTxt;
     private javax.swing.JComboBox mezmurCatecogySelectorList;
@@ -370,15 +435,16 @@ public class CollectionEditorScreen extends javax.swing.JFrame implements Collec
     private javax.swing.JTextField mezmurIdTxt;
     private javax.swing.JTextField mezmurModifiedDateTxt;
     private javax.swing.JTextField mezmurOwnerTxt;
+    private javax.swing.JTextField mezmurSearchField;
     private javax.swing.JComboBox mezmurStatusOption;
     private javax.swing.JTextField mezmurTitleTxt;
     private javax.swing.JTextField mezmurVideoUrlTxt;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 
     @Override
     public void onAppendMezmur(MezmurInfo data) {
         this.mezmurListModel.addElement(data);
-        System.out.println("Model size = " + mezmurListModel.size());
+        //System.out.println("Model size = " + mezmurListModel.size());
     }
 
     @Override

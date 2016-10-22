@@ -5,14 +5,12 @@
  */
 package mezmurcollectioneditor.process;
 
-import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import mezmurcollectioneditor.data.Callback;
 /**
  *
  * @author Filippo
  * @param <D>
- * @param <T>
  */
 public class JsonProcessor<D> extends BaseProcessor<D> {
     
@@ -33,30 +31,6 @@ public class JsonProcessor<D> extends BaseProcessor<D> {
     public void open(String path, Callback callback) {
         createTask(path, callback);
     }
-
-//    @Override
-//    protected void onDoInbackground(String path, Callback<Class<List<T>>> callback) {
-//        String dataJson = fileUtility.readFile(path);
-//        
-//        
-//        
-////        Class<List<T>> clazz = null;
-//        List<T> dataList = gson.fromJson(dataJson, new TypeToken<List<T>>() {}.getType());
-//        for(int i = 0; i < dataList.size(); i++) {
-//            T data = dataList.get(i);
-//            callback.onSuccess(data);
-//        }
-//    }
-//
-//    @Override
-//    protected void onDoInbackground(String path, Callback<D, T> callback) {
-//        String dataJson = fileUtility.readFile(path);
-//        List<D> dataList = gson.fromJson(dataJson, callback.getType());
-//        for(int i = 0; i < dataList.size(); i++) {
-//            T data = dataList.get(i);
-//            callback.onSuccess(data);
-//        }
-//    }
 
     @Override
     protected void onDoInbackground(String path, Callback<D> callback) {
